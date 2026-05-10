@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Manager Pro</title>
+</head>
+<body>
+    <!-- Login Overlay -->
+    <div id="login-overlay">
+        <div class="login-box fluent-card">
+            <h2>CRM Login</h2>
+            <div class="form-group">
+                <label>User ID</label>
+                <input type="text" id="login-id" placeholder="e.g. AGT001">
+            </div>
+            <div class="form-group">
+                <label>PIN</label>
+                <input type="password" id="login-pin" placeholder="Enter PIN">
+            </div>
+            <button id="btn-login" class="fluent-btn primary">Login</button>
+            <p id="login-error" class="error-text text-center" hidden></p>
+        </div>
+    </div>
+
+    <!-- App Shell -->
+    <div id="app-shell" hidden>
+        <!-- Header -->
+        <header id="top-bar">
+            <div class="header-left">
+                <strong>CRM</strong>
+                <span id="role-badge" class="badge"></span>
+            </div>
+            <div class="header-right">
+                <span id="user-name"></span>
+                <button id="btn-logout" class="fluent-btn small text-only">Logout</button>
+            </div>
+        </header>
+
+        <!-- Admin Panel -->
+        <div id="admin-panel" hidden>
+            <div class="tabs">
+                <button class="admin-tab active" data-target="tab-full-data">Full Data</button>
+                <button class="admin-tab" data-target="tab-bulk-assign">Bulk Assign</button>
+                <button class="admin-tab" data-target="tab-filter-assign">Filter Assign</button>
+            </div>
+
+            <div id="tab-full-data" class="admin-tab-content">
+                <div class="table-container">
+                    <table class="fluent-table">
+                        <thead>
+                            <tr>
+                                <th>Loan ID</th>
+                                <th>Name</th>
+                                <th>City</th>
+                                <th>Assign To</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-full-body"></tbody>
+                    </table>
+                </div>
+                <button id="btn-load-more" class="fluent-btn block mt-2">Load More</button>
+            </div>
+
+            <div id="tab-bulk-assign" class="admin-tab-content" hidden>
+                <div class="table-container">
+                    <table class="fluent-table">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="bulk-select-all"></th>
+                                <th>Loan ID</th>
+                                <th>Name</th>
+                                <th>Current Agent</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-bulk-body"></tbody>
+                    </table>
+                </div>
+                <div class="action-bar fixed-bottom">
+                    <select id="bulk-agent-select" class="fluent-select"></select>
+                    <button id="btn-bulk-assign" class="fluent-btn primary block mt-1">Assign Selected</button>
+                </div>
+            </div>
+
+            <div id="tab-filter-assign" class="admin-tab-content" hidden>
+                <div class="fluent-card p-2 mt-2">
+                    <div class="form-group">
+                        <label>Filter By Column</label>
+                        <select id="filter-col-select" class="fluent-select">
+                            <option value="2">City</option>
+                            <option value="3">Amount</option>
+                            <option value="13">Type</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Match Value</label>
+                        <input type="text" id="filter-val-input" placeholder="Exact match text">
+                    </div>
+                    <button id="btn-filter-preview" class="fluent-btn block mt-1 mb-1">Preview Matches</button>
+                    <p id="filter-preview-result" class="text-center font-bold text-primary"></p>
+                    <hr>
+                    <div class="form-group mt-2">
+                        <label>Assign All Matches To</label>
+                        <select id="filter-agent-select" class="fluent-select"></select>
+                    </div>
+                    <button id="btn-filter-apply" class="fluent-btn primary block">Apply Assignment</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Agent View -->
+        <div id="agent-view" hidden>
+            <div class="agent-actions mb-2">
+                <button id="btn-agent-refresh" class="fluent-btn block">Refresh My List</button>
+            </div>
+            <div id="agent-card-list" class="scroll-y"></div>
+        </div>
+
+        <!-- Case Detail Panel -->
+        <div id="case-detail-panel" hidden>
+            <button id="btn-back-to-list" class="fluent-btn text-only mb-2">← Back to List</button>
+
+            <div class="header-strip">
+                <h3 id="case-header-loan"></h3>
+                <p id="case-header-name" class="font-bold"></p>
+                <p id="case-header-info" class="text-muted"></p>
+            </div>
+
+            <div class="ff-form mt-2 scroll-y">
+                <div class="form-group">
+                    <label>1. Availability *</label>
+                    <select id="ff-availability" class="fluent-select">
+                        <option value="">Select...</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                        <option value="Third Party">Third Party</option>
+                    </select>
+                    <span id="ff-availability-error" class="ff-error" hidden></span>
+                </div>
+
+                <div class="form-group">
+                    <label>2. Standard Feedback *</label>
+                    <select id="ff-std-feedback" class="fluent-select">
+                        <option value="">Select...</option>
+                        <option value="Paid">Paid</option>
+                        <option value="RNR">RNR</option>
+                        <option value="PTP">PTP</option>
+                        <option value="CB">CB</option>
+                        <option value="RTP">RTP</option>
+                        <option value="Non Contactable">Non Contactable</option>
+                        <option value="Multiple PTP">Multiple PTP</option>
+                        <option value="Already Settled">Already Settled</option>
+                        <option value="Disputed Case">Disputed Case</option>
+                        <option value="Loan Closed">Loan Closed</option>
+                        <option value="Settlement">Settlement</option>
+                        <option value="Agent Issue">Agent Issue</option>
+                        <option value="Dealer Issue">Dealer Issue</option>
+                        <option value="Sensitive Case">Sensitive Case</option>
+                        <option value="Switch Off">Switch Off</option>
+                        <option value="Busy">Busy</option>
+                        <option value="Not in Service">Not in Service</option>
+                        <option value="Wrong No.">Wrong No.</option>
+                        <option value="Not Connected">Not Connected</option>
+                    </select>
+                    <span id="ff-std-feedback-error" class="ff-error" hidden></span>
+                </div>
+
+                <div class="form-group">
+                    <label>3. Detailed Feedback</label>
+                    <textarea id="ff-detail-feedback" rows="4"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>4. REF 1 Availability</label>
+                    <select id="ff-ref1-avail" class="fluent-select">
+                        <option value="">Select...</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                        <option value="Third Party">Third Party</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>5. REF 1 Feedback</label>
+                    <input type="text" id="ff-ref1-fb">
+                </div>
+
+                <div class="form-group">
+                    <label>6. REF 2 Availability</label>
+                    <select id="ff-ref2-avail" class="fluent-select">
+                        <option value="">Select...</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                        <option value="Third Party">Third Party</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>7. REF 2 Feedback</label>
+                    <input type="text" id="ff-ref2-fb">
+                </div>
+
+                <div class="form-group">
+                    <label>8. Type *</label>
+                    <select id="ff-type" class="fluent-select">
+                        <option value="">Select...</option>
+                        <option value="Paid">Paid</option>
+                        <option value="Hold">Hold</option>
+                        <option value="Remove">Remove</option>
+                    </select>
+                    <span id="ff-type-error" class="ff-error" hidden></span>
+                </div>
+
+                <button id="btn-submit-feedback" class="fluent-btn primary block mt-3 mb-4">Submit Feedback</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container"></div>
+</body>
+</html>

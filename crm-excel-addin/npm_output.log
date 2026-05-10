@@ -1,0 +1,12 @@
+
+> crm-excel-addin@1.0.0 start
+> office-addin-dev-certs install --machine && webpack serve --mode development --https
+
+The developer certificates have been generated in /home/jules/.office-addin-dev-certs
+Installing CA certificate "Developer CA for Microsoft Office Add-ins"...
+You now have trusted access to https://localhost.
+Certificate: /home/jules/.office-addin-dev-certs/localhost.crt
+Key: /home/jules/.office-addin-dev-certs/localhost.key
+[webpack-cli] Invalid options object. Dev Server has been initialized using an options object that does not match the API schema.
+ - options.server.options should be an object:
+   object { passphrase?, requestCert?, ca?, cacert?, cert?, crl?, key?, pfx?, … }

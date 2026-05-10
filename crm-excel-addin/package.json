@@ -1,0 +1,24 @@
+{
+  "name": "crm-excel-addin",
+  "version": "1.0.0",
+  "description": "Enterprise Multi-User CRM Add-in for Microsoft 365 Excel",
+  "main": "src/taskpane/taskpane.js",
+  "scripts": {
+    "start": "office-addin-dev-certs install --machine && webpack serve --mode development --https",
+    "build": "webpack --mode production"
+  },
+  "dependencies": {
+    "@microsoft/office-js": "latest"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^11",
+    "css-loader": "^6",
+    "html-webpack-plugin": "^5",
+    "office-addin-dev-certs": "^1.11.3",
+    "style-loader": "^3",
+    "webpack": "^5",
+    "webpack-cli": "^5",
+    "webpack-dev-server": "^4",
+    "html-loader": "^4.2.0"
+  }
+}
