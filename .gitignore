@@ -1,0 +1,6 @@
+crm-excel-addin/node_modules/
+crm-excel-addin/dist/
+crm-excel-addin/.env
+node_modules/
+dist/
+.env
